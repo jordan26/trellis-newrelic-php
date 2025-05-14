@@ -1,10 +1,4 @@
-newrelic_package_state: latest
-
-newrelic_config_default:
-  license: "{{ vault_newrelic_license }}"
-  appname: "{{ wordpress_sites.keys() | first }} {{ env }}"
-  framework: wordpress
-  logfile: /var/log/newrelic/php_agent.log
-  daemon.logfile: /var/log/newrelic/newrelic-daemon.log
-
-newrelic_config_combined: "{{ newrelic_config_default | combine(newrelic_config | default({})) }}"
+newrelic_php_conf_file: "/etc/php/{{ php_version }}/fpm/conf.d/newrelic.ini"
+newrelic_license_key: '{{ vault_newrelic_license_key }}'
+newrelic_app_name: '{{ ansible_hostname }}'
+newrelic_logging_level: info

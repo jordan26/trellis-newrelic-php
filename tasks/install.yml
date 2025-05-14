@@ -1,15 +1,12 @@
----
-- name: Trust New Relic GPG key
-  apt_key:
-    url: 'https://download.newrelic.com/548C16BF.gpg'
+- name: Install New Relic CLI
+  shell: |
+    curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash
+  args:
+    creates: /usr/local/bin/newrelic
 
-- name: Configure New Relic apt repository
-  apt_repository:
-    repo: 'deb http://apt.newrelic.com/debian/ newrelic non-free'
-
-- name: Install New Relic PHP agent
-  apt:
-    name: newrelic-php5
-    state: "{{ newrelic_package_state }}"
-    update_cache: yes
-    cache_valid_time: "{{ apt_cache_valid_time }}"
+- name: Install New Relic PHP Agent via CLI
+  shell: |
+    NEW_RELIC_API_KEY={{ newrelic_license_key }}     NEW_RELIC_ACCOUNT_ID={{ newrelic_account_id }}     /usr/local/bin/newrelic install -y
+  environment:
+    NEW_RELIC_API_KEY: "{{ newrelic_license_key }}"
+    NEW_RELIC_ACCOUNT_ID: "{{ newrelic_account_id }}"
