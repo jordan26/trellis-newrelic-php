@@ -1,0 +1,12 @@
+---
+- name: Ensure mu-plugins directory exists
+  file:
+    path: "{{ deploy_helper.new_release_path }}/web/app/mu-plugins"
+    state: directory
+    mode: 0755
+
+- name: Copy New Relic mu-plugin
+  copy:
+    src: roles/trellis-newrelic-php/files/newrelic.php
+    dest: "{{ deploy_helper.new_release_path }}/web/app/mu-plugins/newrelic.php"
+    mode: 0644
